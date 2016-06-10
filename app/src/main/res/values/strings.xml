@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">猜猜我是谁</string>
+
+    <string name="str_main_btn_register_text">动作注册</string>
+    <string name="str_main_btn_login_text">动作登录</string>
+
+    <string name="str_register_et_username_hint">请输入你的名字</string>
+    <string name="str_register_btn_confirm_text">确定注册</string>
+    <string name="str_register_btn_abort_text">重新拍照</string>
+
+    <string name="str_result_btn_back_text">返回首页</string>
+</resources>
