@@ -96,32 +96,39 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     case SharedData.OPERATION_SUCCESS:
                         try {
                             JSONArray persons = (JSONArray) msg.obj;
-                            for (int i = 0; i < persons.length(); i++) {
-                                JSONObject person = persons.getJSONObject(i);
-                                String person_name = person.getString("person_name");
-                                FaceppUtil.getFaceid(MainActivity.this, person_name, new FaceppUtil.Callback() {
-                                    @Override
-                                    public void success(Object result) {
-                                        Message message = Message.obtain();
-                                        message.what = SharedData.OPERATION_SUCCESS;
-                                        message.obj = result;
-                                        getFaceidHandler.sendMessage(message);
-                                    }
+                            if(persons.length() == 0){
+                                progress.setVisibility(View.GONE);
+                                register.setEnabled(true);
+                                login.setEnabled(true);
+                            }else {
+                                for (int i = 0; i < persons.length(); i++) {
+                                    JSONObject person = persons.getJSONObject(i);
+                                    String person_name = person.getString("person_name");
+                                    FaceppUtil.getFaceid(MainActivity.this, person_name, new FaceppUtil.Callback() {
+                                        @Override
+                                        public void success(Object result) {
+                                            Message message = Message.obtain();
+                                            message.what = SharedData.OPERATION_SUCCESS;
+                                            message.obj = result;
+                                            getFaceidHandler.sendMessage(message);
+                                        }
 
-                                    @Override
-                                    public void error(String warningStr) {
-                                        Message message = Message.obtain();
-                                        message.what = SharedData.OPERATION_ERROR;
-                                        message.obj = warningStr;
-                                        getFaceidHandler.sendMessage(message);
-                                    }
-                                });
+                                        @Override
+                                        public void error(String warningStr) {
+                                            Message message = Message.obtain();
+                                            message.what = SharedData.OPERATION_ERROR;
+                                            message.obj = warningStr;
+                                            getFaceidHandler.sendMessage(message);
+                                        }
+                                    });
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         break;
                     case SharedData.OPERATION_ERROR:
+                        progress.setVisibility(View.GONE);
                         SharedData.popToast(MainActivity.this, (String) msg.obj);
                         break;
                 }
